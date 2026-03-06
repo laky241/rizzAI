@@ -36,6 +36,17 @@ That's it. Open WhatsApp Web, start a conversation, and click the ReplyAI icon.
 
 ---
 
+**Description:**
+```
+The previous Quick Start section assumed everyone knew how to use
+developer mode. Separated it into two clear paths:
+
+- End users → Chrome Web Store (coming soon, star to get notified)
+- Developers → Load unpacked instructions with a clear note that
+  this is for dev/testing only
+
+Fixes the confusion for non-technical users landing on the repo.
+
 ## Getting Your API Key
 
 ReplyAI uses the Claude API (by Anthropic) to generate replies.
