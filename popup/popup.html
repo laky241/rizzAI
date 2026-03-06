@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReplyAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <div class="logo-mark">
+        <span class="logo-dot"></span>
+        <span class="logo-dot"></span>
+        <span class="logo-dot"></span>
+      </div>
+      <span class="logo-text">Reply<strong>AI</strong></span>
+    </div>
+    <div class="header-right">
+      <div class="usage-badge" id="usageBadge">
+        <span id="usageCount">10</span> left
+      </div>
+      <button class="settings-btn" id="settingsBtn" title="Settings">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+          <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- Platform Indicator -->
+    <div class="platform-bar" id="platformBar">
+      <div class="platform-dot" id="platformDot"></div>
+      <span id="platformName">Detecting platform...</span>
+    </div>
+
+    <!-- Tone Selector -->
+    <div class="tone-section">
+      <p class="section-label">Tone</p>
+      <div class="tone-pills">
+        <button class="tone-pill active" data-tone="casual">Casual</button>
+        <button class="tone-pill" data-tone="flirty">Flirty 🔥</button>
+        <button class="tone-pill" data-tone="professional">Professional</button>
+        <button class="tone-pill" data-tone="funny">Funny 😂</button>
+        <button class="tone-pill" data-tone="direct">Direct</button>
+      </div>
+    </div>
+
+    <!-- Context Input (optional override) -->
+    <div class="context-section">
+      <p class="section-label">Context <span class="optional-tag">optional</span></p>
+      <textarea
+        id="contextInput"
+        class="context-textarea"
+        placeholder="Add extra context... e.g. 'we just matched' or 'she's been cold lately'"
+        rows="2"
+      ></textarea>
+    </div>
+
+    <!-- Generate Button -->
+    <button class="generate-btn" id="generateBtn">
+      <span class="generate-btn-text">Generate Replies</span>
+      <div class="generate-btn-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+    </button>
+
+    <!-- Loading State -->
+    <div class="loading-state hidden" id="loadingState">
+      <div class="loading-bars">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <p class="loading-text">Reading conversation...</p>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-state hidden" id="errorState">
+      <div class="error-icon">⚠</div>
+      <p class="error-text" id="errorText">Couldn't read the conversation. Make sure you have a chat open.</p>
+      <button class="retry-btn" id="retryBtn">Try Again</button>
+    </div>
+
+    <!-- Replies Container -->
+    <div class="replies-section hidden" id="repliesSection">
+      <div class="replies-header">
+        <p class="section-label">Suggestions</p>
+        <button class="regenerate-btn" id="regenerateBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M23 4v6h-6"/><path d="M1 20v-6h6"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          Regenerate
+        </button>
+      </div>
+
+      <div class="replies-list" id="repliesList">
+        <!-- Replies injected here by JS -->
+      </div>
+    </div>
+
+    <!-- No conversation state -->
+    <div class="empty-state" id="emptyState">
+      <div class="empty-illustration">
+        <div class="empty-bubble empty-bubble--left"></div>
+        <div class="empty-bubble empty-bubble--right"></div>
+        <div class="empty-bubble empty-bubble--left small"></div>
+      </div>
+      <p class="empty-title">Open a conversation</p>
+      <p class="empty-sub">Go to WhatsApp Web, Instagram, or Hinge and open a chat — then come back here.</p>
+    </div>
+
+  </main>
+
+  <!-- Settings Panel -->
+  <div class="settings-panel hidden" id="settingsPanel">
+    <div class="settings-header">
+      <h2 class="settings-title">Settings</h2>
+      <button class="close-settings-btn" id="closeSettingsBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="settings-body">
+      <div class="settings-group">
+        <label class="settings-label">Your Name</label>
+        <input type="text" class="settings-input" id="userName" placeholder="e.g. Aryan" />
+      </div>
+
+      <div class="settings-group">
+        <label class="settings-label">Reply Length</label>
+        <div class="length-options">
+          <button class="length-opt active" data-length="short">Short</button>
+          <button class="length-opt" data-length="medium">Medium</button>
+          <button class="length-opt" data-length="long">Long</button>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <label class="settings-label">API Key <span class="optional-tag">required for unlimited</span></label>
+        <input type="password" class="settings-input" id="apiKey" placeholder="sk-ant-..." />
+        <p class="settings-hint">Free plan: 10 replies/day. Add your Claude API key for unlimited.</p>
+      </div>
+
+      <button class="save-settings-btn" id="saveSettingsBtn">Save Settings</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast hidden" id="toast">
+    <span id="toastText">Copied to clipboard!</span>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
