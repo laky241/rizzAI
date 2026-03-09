@@ -1,6 +1,6 @@
 <div align="center">
 
-# ReplyAI
+# RizzAI
 
 **Context-aware reply suggestions, living inside your conversations.**
 
