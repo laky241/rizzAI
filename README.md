@@ -1,14 +1,44 @@
-# ReplyAI — Chrome Extension
+<div align="center">
 
-> Context-aware AI reply suggestions, living right inside your conversations.
+# ReplyAI
+
+**Context-aware reply suggestions, living inside your conversations.**
+
+WhatsApp Web · Instagram DMs · Hinge · More coming
+
+<br/>
+
+![Version](https://img.shields.io/badge/version-1.0.0-c8ff57?style=flat-square&labelColor=0d0d0f)
+![Manifest](https://img.shields.io/badge/manifest-v3-c8ff57?style=flat-square&labelColor=0d0d0f)
+![License](https://img.shields.io/badge/license-MIT-c8ff57?style=flat-square&labelColor=0d0d0f)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-c8ff57?style=flat-square&labelColor=0d0d0f)
+
+</div>
 
 ---
 
-## What It Does
+## The Problem
 
-ReplyAI sits in your Chrome toolbar and reads the conversation you have open — WhatsApp Web, Instagram DMs, Hinge — then suggests 3 smart replies in whatever tone you want. One click to copy, then send.
+Every time you wanted help replying to a message, you had to switch to ChatGPT, paste the entire conversation, explain the context, copy the reply, then switch back. That's five steps for something that should take one click.
 
-No switching to ChatGPT. No copy-pasting. Just open the extension and hit Generate.
+---
+
+## What ReplyAI Does
+
+ReplyAI is a Chrome extension that sits in your toolbar. Open any conversation on WhatsApp Web, Instagram DMs, or Hinge — it reads the chat directly from the page and generates 3 smart reply options in the tone you pick. Click to copy, then send.
+
+No switching apps. No copy-pasting. Zero friction.
+
+---
+
+## Features
+
+- **Reads conversations automatically** — no copy-paste, reads the page directly
+- **Tone control** — Casual, Flirty, Professional, Funny, or Direct
+- **Reply length** — Short, Medium, or Detailed
+- **Extra context** — optionally add "we just matched" or "she's been cold lately"
+- **One-click copy** — tap any suggestion to copy it instantly
+- **Free tier** — 10 replies/day with no account needed. Add your own API key for unlimited.
 
 ---
 
@@ -16,68 +46,79 @@ No switching to ChatGPT. No copy-pasting. Just open the extension and hit Genera
 
 | Platform | Status |
 |---|---|
-| WhatsApp Web | ✅ Fully supported |
-| Instagram DMs | ✅ Supported |
-| Hinge Web | ✅ Supported |
-| Telegram Web | 🔜 Coming soon |
-| LinkedIn Messages | 🔜 Coming soon |
+| WhatsApp Web | ✅ Live |
+| Instagram DMs | ✅ Live |
+| Hinge Web | ✅ Live |
+| Telegram Web | 🔜 In progress |
+| LinkedIn Messages | 🔜 Planned |
+| Twitter / X DMs | 🔜 Planned |
 
 ---
 
-## How to Load the Extension (Development Mode)
+## Installation
+
+### For Users — Chrome Web Store
+
+> 🚀 **Chrome Web Store listing coming soon.**
+>
+> Once live, installation will be one click — no setup, no terminal, no developer mode needed.
+> **Star this repo** to get notified when it drops.
+
+---
+
+### For Developers — Run Locally
+```bash
+git clone https://github.com/YOUR_USERNAME/replyai-extension.git
+```
 
 1. Open Chrome and go to `chrome://extensions`
-2. Toggle on **Developer mode** (top right corner)
-3. Click **Load unpacked**
-4. Select the `replyai-extension` folder
-5. Pin the ReplyAI extension to your toolbar
+2. Toggle on **Developer mode** (top right)
+3. Click **Load unpacked** → select the cloned folder
+4. Pin the ReplyAI icon to your toolbar
 
-That's it. Open WhatsApp Web, start a conversation, and click the ReplyAI icon.
+> This is for local development and testing only. End users will install through the Chrome Web Store.
 
 ---
 
-**Description:**
+### Get a Free API Key
+
+ReplyAI runs on [Groq](https://console.groq.com) — free, no credit card, 14,400 requests/day.
+
+1. Sign up at [console.groq.com](https://console.groq.com)
+2. Go to **API Keys** → create a new key
+3. Open ReplyAI → click ⚙️ Settings → paste your key → Save
+
+---
+
+## How It Works
 ```
-The previous Quick Start section assumed everyone knew how to use
-developer mode. Separated it into two clear paths:
+You open a conversation
+        ↓
+ReplyAI reads the chat DOM (no clipboard needed)
+        ↓
+Sends last 20 messages + your tone to Groq API
+        ↓
+AI returns 3 contextual reply suggestions
+        ↓
+Click one to copy → paste → send
+```
 
-- End users → Chrome Web Store (coming soon, star to get notified)
-- Developers → Load unpacked instructions with a clear note that
-  this is for dev/testing only
-
-Fixes the confusion for non-technical users landing on the repo.
-
-## Getting Your API Key
-
-ReplyAI uses the Claude API (by Anthropic) to generate replies.
-
-1. Go to [console.anthropic.com](https://console.anthropic.com)
-2. Sign up / log in
-3. Go to **API Keys** → Create a new key
-4. Open ReplyAI → Settings → paste your key
-
-Free daily limit: **10 replies/day** (resets at midnight).
-With your own API key: **unlimited**.
+Conversations are never stored. Everything goes directly from your browser to Groq and is discarded immediately.
 
 ---
 
 ## Project Structure
-
 ```
 replyai-extension/
-├── manifest.json              # Extension config, permissions, entry points
-│
+├── manifest.json              # Extension config, permissions (MV3)
 ├── popup/
-│   ├── popup.html             # Extension popup UI
-│   ├── popup.css              # Full design system (dark theme)
-│   └── popup.js               # All popup logic, state management
-│
+│   ├── popup.html             # Extension popup markup
+│   ├── popup.css              # Design system — dark theme, CSS variables
+│   └── popup.js               # UI logic, state, settings, clipboard
 ├── content/
-│   └── reader.js              # Injected into WhatsApp/IG/Hinge — reads DOM
-│
+│   └── reader.js              # Injected into chat pages, reads the DOM
 ├── background/
-│   └── service_worker.js      # Handles Claude API calls
-│
+│   └── service_worker.js      # Groq API calls, background context
 └── assets/
     └── icons/                 # Extension icons (16, 32, 48, 128px)
 ```
@@ -86,35 +127,74 @@ replyai-extension/
 
 ## Tech Stack
 
-- **Manifest V3** Chrome Extension
-- **Vanilla JS** — no framework needed for an extension popup
-- **Claude API** (`claude-opus-4`) for reply generation
-- **Chrome Storage API** for settings and usage tracking
-- **Clipboard API** for one-tap copy
+| Layer | Tech |
+|---|---|
+| Extension | Chrome Manifest V3, Vanilla JS |
+| AI | Groq API — llama-3.3-70b |
+| Storage | Chrome Storage API |
+| Styling | Pure CSS, no framework |
+
+No React, no bundler, no build step. Clone and load — that's it.
 
 ---
 
-## Week 1 Roadmap
+## Privacy
 
-- [x] Day 1-2: Extension shell + UI + WhatsApp Web reader
-- [ ] Day 3: Instagram + Hinge readers, full API integration
-- [ ] Day 4: Tone customisation + reply length settings
-- [ ] Day 5: Polish UI, test across all platforms
-- [ ] Day 6: Usage analytics + freemium limit enforcement
-- [ ] Day 7: Submit to Chrome Web Store
+- Conversations are **never stored** anywhere
+- API calls go directly from your browser to Groq
+- Your API key lives in Chrome's local encrypted storage
+- No analytics, no tracking, no account required
 
 ---
 
-## Future (Post-MVP)
+## Roadmap
 
-- **Android App** — Floating overlay using Accessibility API
-- **Style Learning** — AI learns how you text and mirrors your voice
-- **ReplyScore** — Rates how your reply will land before you send it
-- **Dating Mode** — Hinge/Bumble-specific conversation starters
-- **Team/B2B Plan** — For sales reps, support agents, recruiters
+**v1.1** — Telegram Web + LinkedIn support, keyboard shortcut (`Ctrl+Shift+R`), regenerate individual replies
+
+**v1.2** — Style learning (AI mirrors how you personally text), ReplyScore, dating mode for Hinge/Bumble
+
+**v2.0** — Android app with floating overlay, freemium paywall, B2B team plan
+
+---
+
+## Contributing
+
+PRs are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) to get started.
 
 ---
 
 ## License
 
-MIT — build on it, ship it, make money.
+MIT — use it, build on it, ship it.
+
+---
+
+<div align="center">
+Built with focus. No fluff.
+</div>
+```
+
+---
+
+Now your full file structure should be:
+```
+replyai-extension/
+├── manifest.json
+├── README.md
+├── .gitignore
+├── CONTRIBUTING.md
+├── CHANGELOG.md
+├── popup/
+│   ├── popup.html
+│   ├── popup.css
+│   └── popup.js
+├── content/
+│   └── reader.js
+├── background/
+│   └── service_worker.js
+└── assets/
+    └── icons/
+        ├── icon16.png
+        ├── icon32.png
+        ├── icon48.png
+        └── icon128.png
