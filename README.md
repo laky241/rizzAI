@@ -25,7 +25,7 @@ Every time you wanted help replying to a message, you had to switch to ChatGPT, 
 
 ## What ReplyAI Does
 
-ReplyAI is a Chrome extension that sits in your toolbar. Open any conversation on WhatsApp Web, Instagram DMs, or Hinge — it reads the chat directly from the page and generates 3 smart reply options in the tone you pick. Click to copy, then send.
+ReplyAI is a Chrome extension that sits in your toolbar. Open any conversation on WhatsApp Web, Instagram DMs, or Hinge it reads the chat directly from the page and generates 3 smart reply options in the tone you pick. Click to copy, then send.
 
 No switching apps. No copy-pasting. Zero friction.
 
@@ -59,7 +59,7 @@ No switching apps. No copy-pasting. Zero friction.
 
 ### For Users — Chrome Web Store
 
-> 🚀 **Chrome Web Store listing coming soon.**
+>  **Chrome Web Store listing coming soon.**
 >
 > Once live, installation will be one click — no setup, no terminal, no developer mode needed.
 > **Star this repo** to get notified when it drops.
