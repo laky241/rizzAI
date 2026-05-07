@@ -169,10 +169,6 @@ MIT — use it, build on it, ship it.
 
 ---
 
-<div align="center">
-Built with focus. No fluff.
-</div>
-```
 
 ---
 
